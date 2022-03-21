@@ -1,6 +1,7 @@
 from asyncio.windows_events import NULL
 import pymongo
 import click
+import smtplib
 myclient = pymongo.MongoClient("mongodb://localhost:27017/")
 mydb = myclient["admin"]
 coll=mydb["CMDOperation"]
@@ -15,7 +16,7 @@ print("[1]. Insert Document")
 print("[2]. Find Document")
 print("[3]. Delete Document")
 print("[4]. Update Document")
-print("[5]. Show Documents")
+print("[5]. Show Documents And Mail & SMS")
 print("==============================================")
 print("Kindly Enter Any Number [0] or [1] or [2] or [3] or [4] or [5] based on the Requirement")
 
@@ -48,7 +49,7 @@ elif choice_input=="1":
     if coll.find_one(insert_values_email):
         print("Email I'd already Exist in the databases, Please enter another email i'd")
     if  new_name=="" or  new_company_name=="" or  new_Mobile=="" or  new_email=="" or  new_address=="":
-        print("Any entry field can not be empty [ Required ]")
+        print("Any Entry field can not be empty [ Required ]")
     else:   
         coll.insert_one(insert_values_total)
         print("Great :) Document has been inserted successfully :)")
@@ -111,7 +112,11 @@ elif choice_input=="4":
                 newvalues_update =  {"$set":{ "name": update_name_input }}
 
                 coll.update_one(old_name_myquery,newvalues_update)
-                print("Name has been Updated Successfully..")
+                print("Name has been Updated Successfully... :) [ Look below are the update details] ")
+
+                for x in coll.find(exist_mobile):
+                    print(x)
+
             else:
                 print("Username not exist in the Database\n")
         else:
@@ -135,7 +140,10 @@ elif choice_input=="4":
                 update_email_input=str(input("Please Enter Your New Email I'd ..\n"))
                 newvalues_update_email =  {"$set":{ "email": update_email_input }}
                 coll.update_one(old_email_myquery,newvalues_update_email)
-                print("Emaid I'd has been Updated Successfully..")
+                print("Emaid I'd has been Updated Successfully.. :) [ Look below are the update details]")
+
+                for x in coll.find(exist_mobile):
+                    print(x)
             else:
                 print("Email I'd not Exist in the Database :( \n")                
         else:
@@ -159,7 +167,10 @@ elif choice_input=="4":
                 update_address_input=str(input("Please Enter Your New Address ..\n"))
                 newvalues_update_address =  {"$set":{ "address": update_address_input }}
                 coll.update_one(old_address_myquery,newvalues_update_address)
-                print("Address has been Updated Successfully..")
+                print("Address has been Updated Successfully.. :) [ Look below are the update details ]")
+
+                for x in coll.find(exist_mobile):
+                    print(x)
             else:
                 print("Sorry, This address does not exist in the database :( \n")
         else:
@@ -183,7 +194,10 @@ elif choice_input=="4":
                 update_mobile_input=str(input("Please Enter Your New Mobile Number ..\n"))
                 newvalues_update_mobile =  {"$set":{ "mobile": update_mobile_input }}
                 coll.update_one(old_mobile_myquery,newvalues_update_mobile)
-                print("Mobile Number has been Updated Successfully..")
+                print("Mobile Number has been Updated Successfully..:) [ Look below are the update details ]")
+
+                for x in coll.find(exist_mobile):
+                    print(x)
                 
             else:
                 print("Invalid, Mobile Number does not exist  :(")
@@ -208,7 +222,10 @@ elif choice_input=="4":
                 update_companyname_input=str(input("Please Enter Your New Company Name ..\n"))
                 newvalues_update_companyname =  {"$set":{ "company name": update_companyname_input }}
                 coll.update_one(old_companyname_myquery,newvalues_update_companyname)
-                print("Company Name has been Updated Successfully..")
+                print("Company Name has been Updated Successfully..:) [ Look below are the update details ]")
+
+                for x in coll.find(exist_mobile):
+                    print(x)
             else:
                 print("Sorry, This Company Name does not exist in the database :(\n")
         else:
@@ -228,17 +245,34 @@ elif choice_input=="5":
     for i in coll.find({}):
         print(i)
     
-    print("Find User details By Unique Mobile No....")
-    mobile_input=str(input("Please Enter Your Existing Mobile No.\n"))
-    value1={"mobile":mobile_input}
+    # print("Find User details By Unique Mobile No....")
+    # mobile_input=str(input("Please Enter Your Existing Mobile No.\n"))
+    # value1={"mobile":mobile_input}
 
-    res=coll.find(value1)
-    if res:
-        for i in res:
-            print(i)
-            click.confirm("Please Press Any Button to Exit !!")
+    # res=coll.find(value1)
+    # if res:
+    #     for i in res:
+    #         print(i)
+    #         click.confirm("Please Press Any Button to Exit !!")
+    # else:
+    #     print("Invalid Mobile Number\n")
+
+
+    print("\n")
+    print("Please Enter Any Keys [E] or [M] to send based on the requirement")
+    mail_sms_choices={"E":"Email","M":"Mobile"}
+    mail_sms_choices_input=str(input(mail_sms_choices)).upper()
+
+    if mail_sms_choices_input=="E":
+        print("Here will write mail functionality")
+        click.confirm("Please Press Any Button to Exit !!")
+    elif mail_sms_choices_input=="M":
+        print("Here will write Mobile sms code")
+        click.confirm("Please Press Any Button to Exit !!")
     else:
-        print("Invalid Mobile Number\n")
+        
+        click.confirm("Invalid Choice- Please Press Any Button to Exit !!")
+
 
 else:
     print("Invalid, Please Enter correct choice")
