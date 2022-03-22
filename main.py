@@ -3,9 +3,10 @@ import pymongo
 import click
 import smtplib
 
-from pyfiglet import Figlet
-f = Figlet(font='slant')
-print(f.renderText('Agatsa Software\n'))
+import pyfiglet
+  
+result = pyfiglet.figlet_format("Agatsa Software || SanketLife ||")
+print(result)
 
 
 myclient = pymongo.MongoClient("mongodb://localhost:27017/")
