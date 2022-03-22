@@ -2,6 +2,12 @@ from asyncio.windows_events import NULL
 import pymongo
 import click
 import smtplib
+
+from pyfiglet import Figlet
+f = Figlet(font='slant')
+print(f.renderText('Agatsa Software\n'))
+
+
 myclient = pymongo.MongoClient("mongodb://localhost:27017/")
 mydb = myclient["admin"]
 coll=mydb["CMDOperation"]
@@ -53,6 +59,7 @@ elif choice_input=="1":
     else:   
         coll.insert_one(insert_values_total)
         print("Great :) Document has been inserted successfully :)")
+        
 
     click.confirm("Please Press Any Button to Exit !!")
 elif choice_input=="2":
