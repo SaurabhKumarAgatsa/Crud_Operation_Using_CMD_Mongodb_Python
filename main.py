@@ -271,18 +271,15 @@ elif choice_input=="5":
             smtp = smtplib.SMTP('smtp.gmail.com', 587) 
             smtp.starttls()                                             #Use TLS to add security 
             smtp.login("nitiansk@gmail.com","7237084256")               #User Authentication 
-
-            # message="User details"
-            message=[]
-
+           
+            p={}
             res=coll.find(email_quary)
             for value in res:
-                print(value)
-                message.append(i)
-                
-            print(message)
-            smtp.sendmail("nitiansk@gmail.com", email_input,str(message))           #Sending the Email
-            smtp.quit()                                                             #Terminating the session 
+                p=value
+
+            print(list(p.values()))
+            smtp.sendmail("nitiansk@gmail.com", email_input,str(list(p.values())))          #Sending the Email
+            smtp.quit()                                                                     #Terminating the session 
             print ("Great: Email sent successfully!.......... :) ") 
         else:
             print("Invalid email I'd :(  Please enter correct email I'd")
