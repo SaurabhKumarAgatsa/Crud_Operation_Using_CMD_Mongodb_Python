@@ -1,11 +1,13 @@
+import ast
 from asyncio.windows_events import NULL
+from email import message
 import pymongo
 import click
 import smtplib
-
+# print(smtplib)
 import pyfiglet
   
-result = pyfiglet.figlet_format("Agatsa Software || SanketLife ||")
+result = pyfiglet.figlet_format("Agatsa Software || SanketLife ||",font="standard")
 print(result)
 
 
@@ -244,7 +246,6 @@ elif choice_input=="4":
         print("Kindly choose correct key [N] or [E] or [A] or [M] or [C] to proceed !!")
         click.confirm("Please Press Any Button to Exit !!")
 
-
 ##################### Show Entire Documents ##############################################
 elif choice_input=="5":
     print("Showing Entire Documents\n")
@@ -252,19 +253,6 @@ elif choice_input=="5":
     print("Total Documents are: "+str(coll.count_documents({})))
     for i in coll.find({}):
         print(i)
-    
-    # print("Find User details By Unique Mobile No....")
-    # mobile_input=str(input("Please Enter Your Existing Mobile No.\n"))
-    # value1={"mobile":mobile_input}
-
-    # res=coll.find(value1)
-    # if res:
-    #     for i in res:
-    #         print(i)
-    #         click.confirm("Please Press Any Button to Exit !!")
-    # else:
-    #     print("Invalid Mobile Number\n")
-
 
     print("\n")
     print("Please Enter Any Keys [E] or [M] to send based on the requirement")
@@ -272,16 +260,42 @@ elif choice_input=="5":
     mail_sms_choices_input=str(input(mail_sms_choices)).upper()
 
     if mail_sms_choices_input=="E":
-        print("Here will write mail functionality")
+
+        ##### Send datas by email I'd ######
+
+        valid_unique_email_id_input=str(input("Please enter Existing Email I'd\n"))
+        email_quary={"email":valid_unique_email_id_input}
+
+        if coll.find_one(email_quary): 
+            email_input=str(input("Please enter email I'd to send the datas\n"))
+            smtp = smtplib.SMTP('smtp.gmail.com', 587) 
+            smtp.starttls()                                             #Use TLS to add security 
+            smtp.login("nitiansk@gmail.com","7237084256")               #User Authentication 
+
+            # message="User details"
+            message=[]
+
+            res=coll.find(email_quary)
+            for value in res:
+                print(value)
+                message.append(i)
+                
+            print(message)
+            smtp.sendmail("nitiansk@gmail.com", email_input,str(message))           #Sending the Email
+            smtp.quit()                                                             #Terminating the session 
+            print ("Great: Email sent successfully!.......... :) ") 
+        else:
+            print("Invalid email I'd :(  Please enter correct email I'd")
+
         click.confirm("Please Press Any Button to Exit !!")
     elif mail_sms_choices_input=="M":
+
+        ##### Send datas by Mobile Number ######
         print("Here will write Mobile sms code")
         click.confirm("Please Press Any Button to Exit !!")
     else:
         
         click.confirm("Invalid Choice- Please Press Any Button to Exit !!")
-
-
 else:
     print("Invalid, Please Enter correct choice")
 
