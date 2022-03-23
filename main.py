@@ -278,9 +278,12 @@ elif choice_input=="5":
                 p=value
 
             print(list(p.values()))
-            smtp.sendmail("nitiansk@gmail.com", email_input,str(list(p.values())))          #Sending the Email
+
+            message=str(list(p.values()))+"\n\n"+"Thanks & Regard:\n"+"Saurabh Kumar\n"+"Software developer at Agatsa\n"
+            smtp.sendmail("nitiansk@gmail.com", email_input,message)          #Sending the Email    # str(list(p.values()))
             smtp.quit()                                                                     #Terminating the session 
-            print ("Great: Email sent successfully!.......... :) ") 
+            print ("Great: Email sent successfully!.......... :) \n") 
+            print("Please check Your [ Spam and Junk ] Folder if mail not visible in [ Inbox Folder]")
         else:
             print("Invalid email I'd :(  Please enter correct email I'd")
 
